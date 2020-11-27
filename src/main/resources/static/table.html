@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table</title>
+</head>
+<body>
+    <script src="js/main.js"></script>
+    <div id="lineChart"></div>
+<div>
+    <button onclick="dwindow.show()">Новая Запись</button>
+    <button onclick="init()">Инициализация</button>
+    <button onclick="deleteAllRow()">Очистить всё</button>
+</div>
+<table id="table">
+    <tbody>
+        <tr>
+            <th>№</th>
+            <th>День</th>
+            <th>Название</th>
+            <th>Значение</th>
+        </tr>
+    </tbody>
+    <script>loadTable();</script>
+</table>
+    <script src = "https://www.gstatic.com/charts/loader.js"></script>
+    <script>google.charts.load('current', {packages: ['corechart','line']});</script>
+    <dialog id="dwindow">
+        <table id="formNewRow">
+            <tr>
+                <td>Дата</td>
+                <td><input id="date" name="date" type="date"></td>
+            </tr>
+            <tr>
+                <td>Название</td>
+                <td><input id="name" name="name" type="text"></td>
+            </tr>
+            <tr>
+                <td>Значение</td>
+                <td><input id="value" name="value" type="number"></td>
+            </tr>
+            <tr>
+                <td><button onclick="submit()">OK</button></td>
+                <td><button onclick="dwindow.close()">Отмена</button></td>
+            </tr>
+        </table>
+</dialog>
+</body>
+</html>
