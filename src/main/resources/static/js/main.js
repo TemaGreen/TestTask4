@@ -5,25 +5,27 @@ function loadTable() {
     xhr.open('GET', requestURL, true);
     xhr.onload = () => {
         let rows = JSON.parse(xhr.responseText);
+        let array = new Array(rows.length);
         console.log(rows);
         let html = '<tr>\n' +
                         '<th>№</th>\n' +
                         '<th>День</th>\n' +
                         '<th>Название</th>\n' +
-                        '<th>Значение</th>\n' +
+                        '<th colspan="2">Значение</th>\n' +
                     '</tr>';
         for (let i = 0; i < rows.length; i++){
             let row = rows[i];
+            array[i] = [row.date, row.value];
             html += '<tr onclick="listenRow(event,' + row.id + ')">' +
-                        '<td>' + (i+1) + '</td>' +
-                        '<td>' + row.date + '</td>' +
-                        '<td>' + row.name + '</td>' +
-                        '<td>' + row.value + '</td>' +
-                        '<td><button onclick="deleteRow('+ row.id + ')">X</button></td>'
+                        '<td align="center">' + (i+1) + '</td>' +
+                        '<td align="center">' + row.date + '</td>' +
+                        '<td align="center">' + row.name + '</td>' +
+                        '<td align="center">' + row.value + '</td>' +
+                        '<td align="center"><button onclick="deleteRow('+ row.id + ')">X</button></td>'
                     '</tr>';
         }
         document.getElementById('table').innerHTML = html;
-
+        showChart(rows);
     };
     xhr.onerror = () => {
         console.log(xhr.responseText)
@@ -31,6 +33,51 @@ function loadTable() {
     xhr.send();
     console.log(xhr);
 }
+
+function getArrayChart(array) {
+    let result = new Array();
+
+    let map = new Map();
+    let row = new Array();
+    for (let a of array) {
+        map.set(a.name, a.value);
+        if (row[0] == a.date) {
+            result.pop();
+        }
+        row = new Array()
+        row.push(a.date);
+        for (let m of map.values()) {
+            row.push(m);
+        }
+        result.push(row);
+    }
+    console.log(result);
+    let header = ["Дата"];
+    for(let m of map.keys()){
+        header.push(m);
+    }
+    result.unshift(header);
+    for (let r of result){
+        r.length = result[0].length;
+    }
+
+    return result;
+}
+
+function showChart(array){
+    let arraChart = getArrayChart(array);
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(() =>{
+        var data = google.visualization.arrayToDataTable(arraChart);
+        var options = {
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('lineChart'));
+        chart.draw(data, options);
+        }
+
+    );
+}
+
 
 function listenRow( event, rowId){
     let clickedElement = event.target;

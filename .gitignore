@@ -33,8 +33,9 @@ build/
 .vscode/
 /src/main/resources/static/test.html
 /src/main/resources/static/test2.html
-/src/main/resources/static/dia.html
+/src/main/resources/static/test3.html
 /src/main/resources/static/js/test.js
 /src/main/resources/static/js/test2.js
 
 /.mvn/
+/src/main/resources/static/js/test3.js

@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Table</title>
+    <script src = "https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/main.js"></script>
 </head>
 <body>
-    <script src="js/main.js"></script>
     <div id="lineChart"></div>
 <div>
     <button onclick="dwindow.show()">Новая Запись</button>
     <button onclick="init()">Инициализация</button>
     <button onclick="deleteAllRow()">Очистить всё</button>
 </div>
-<table id="table">
+<table id="table" border="2", bordercolor="black", rules="all" cellpadding="5">
     <tbody>
         <tr>
-            <th>№</th>
-            <th>День</th>
-            <th>Название</th>
-            <th>Значение</th>
+            <th align="center">№</th>
+            <th align="center">День</th>
+            <th align="center">Название</th>
+            <th align="center">Значение</th>
         </tr>
     </tbody>
     <script>loadTable();</script>
 </table>
-    <script src = "https://www.gstatic.com/charts/loader.js"></script>
-    <script>google.charts.load('current', {packages: ['corechart','line']});</script>
     <dialog id="dwindow">
         <table id="formNewRow">
             <tr>

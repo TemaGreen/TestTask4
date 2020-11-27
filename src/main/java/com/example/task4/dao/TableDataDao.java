@@ -142,7 +142,7 @@ public class TableDataDao implements DataAccessObject<TableData> {
         try {
             Connection connect = ConnectManager.getConnection();
             PreparedStatement preparedStatement = connect.prepareStatement(
-                    "SELECT id, date, name, value FROM tabledata ORDER BY date",
+                    "SELECT id, date, name, value FROM tabledata ORDER BY date ASC, name ASC",
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
@@ -172,11 +172,40 @@ public class TableDataDao implements DataAccessObject<TableData> {
         List<TableData> list = finaAll();
         if (list.isEmpty()) {
             List<TableData> a = new LinkedList<>();
-            a.add(new TableData("2019-01-01", "Газпром", 2000));
-            a.add(new TableData("2019-01-01", "Автоваз", 2500));
-            a.add(new TableData("2019-01-05", "Сбербанк", 10000));
-            a.add(new TableData("2019-01-10", "Газпром", 2500));
-            a.add(new TableData("2019-01-07", "Автоваз", 2100));
+
+            a.add(new TableData("2019-01-01","Газпром", 7500));
+            a.add(new TableData("2019-01-05","Газпром", 8000));
+            a.add(new TableData("2019-01-06","Газпром", 6000));
+            a.add(new TableData("2019-01-10","Газпром", 10000));
+            a.add(new TableData("2019-01-15","Газпром", 10500));
+            a.add(new TableData("2019-01-20","Газпром", 9000));
+            a.add(new TableData("2019-02-02","Газпром", 10500));
+            a.add(new TableData("2019-02-07","Газпром", 9750));
+            a.add(new TableData("2019-02-18","Газпром", 8423));
+            a.add(new TableData("2019-02-21","Газпром", 6750));
+
+            a.add(new TableData("2019-01-02", "Автоваз", 2500));
+            a.add(new TableData("2019-01-03", "Автоваз", 1000));
+            a.add(new TableData("2019-01-05", "Автоваз", 3400));
+            a.add(new TableData("2019-01-10", "Автоваз", 4200));
+            a.add(new TableData("2019-01-18", "Автоваз", 5750));
+            a.add(new TableData("2019-02-05", "Автоваз", 6300));
+            a.add(new TableData("2019-02-09", "Автоваз", 7350));
+            a.add(new TableData("2019-02-12", "Автоваз", 5250));
+            a.add(new TableData("2019-02-23", "Автоваз", 4300));
+            a.add(new TableData("2019-03-03", "Автоваз", 3304));
+
+            a.add(new TableData("2019-01-04", "Сбербанк", 6000));
+            a.add(new TableData("2019-01-09", "Сбербанк", 7500));
+            a.add(new TableData("2019-01-10", "Сбербанк", 7300));
+            a.add(new TableData("2019-01-20", "Сбербанк", 8200));
+            a.add(new TableData("2019-02-02", "Сбербанк", 8750));
+            a.add(new TableData("2019-02-10", "Сбербанк", 7000));
+            a.add(new TableData("2019-02-15", "Сбербанк", 9360));
+            a.add(new TableData("2019-02-18", "Сбербанк", 10050));
+            a.add(new TableData("2019-03-01", "Сбербанк", 11245));
+            a.add(new TableData("2019-03-10", "Сбербанк", 12345));
+
             insertAll(a);
             list = finaAll();
         }
