@@ -10,7 +10,7 @@ public abstract class Counter {
 
     public Integer getId() {
         if (!freedId.isEmpty()) {
-            return freedId.peek();
+            return freedId.poll();
         } else {
             return firstId++;
         }
