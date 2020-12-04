@@ -8,24 +8,28 @@ function loadTable() {
         let array = new Array(rows.length);
         console.log(rows);
         let html = '<tr>\n' +
-                        '<th>№</th>\n' +
-                        '<th>День</th>\n' +
-                        '<th>Название</th>\n' +
-                        '<th colspan="2">Значение</th>\n' +
-                    '</tr>';
-        for (let i = 0; i < rows.length; i++){
+            '<th>№</th>\n' +
+            '<th>День</th>\n' +
+            '<th>Название</th>\n' +
+            '<th colspan="2">Значение</th>\n' +
+            '</tr>';
+        for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
             array[i] = [row.date, row.value];
             html += '<tr onclick="listenRow(event,' + row.id + ')">' +
-                        '<td align="center">' + (i+1) + '</td>' +
-                        '<td align="center">' + row.date + '</td>' +
-                        '<td align="center">' + row.name + '</td>' +
-                        '<td align="center">' + row.value + '</td>' +
-                        '<td align="center"><button onclick="deleteRow('+ row.id + ')">X</button></td>'
-                    '</tr>';
+                '<td align="center">' + (i + 1) + '</td>' +
+                '<td align="center">' + row.date + '</td>' +
+                '<td align="center">' + row.name + '</td>' +
+                '<td align="center">' + row.value + '</td>' +
+                '<td align="center"><button onclick="deleteRow(' + row.id + ')">X</button></td>'
+            '</tr>';
         }
         document.getElementById('table').innerHTML = html;
-        showChart(rows);
+        if (rows.length != 0) {
+            showChart(rows);
+        } else {
+            document.getElementById('lineChart').innerHTML = "<div id='lineChart'></div>";
+        }
     };
     xhr.onerror = () => {
         console.log(xhr.responseText)
@@ -64,27 +68,24 @@ function getArrayChart(array) {
     return result;
 }
 
-function showChart(array){
+function showChart(array) {
     let arraChart = getArrayChart(array);
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(() =>{
-        var data = google.visualization.arrayToDataTable(arraChart);
-        var options = {
-        };
-        var chart = new google.visualization.LineChart(document.getElementById('lineChart'));
-        chart.draw(data, options);
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(() => {
+            var data = google.visualization.arrayToDataTable(arraChart);
+            var options = {};
+            var chart = new google.visualization.LineChart(document.getElementById('lineChart'));
+            chart.draw(data, options);
         }
-
     );
 }
 
-
-function listenRow( event, rowId){
+function listenRow( event, rowId) {
     let clickedElement = event.target;
-    if(clickedElement.tagName == 'TD' && clickedElement.cellIndex != 0){
+    if (clickedElement.tagName == 'TD' && clickedElement.cellIndex != 0) {
         let html;
         let parent = clickedElement.parentElement;
-        switch (clickedElement.cellIndex){
+        switch (clickedElement.cellIndex) {
             case 1:
                 html = '<td><input type="date" value="' + clickedElement.innerText + '"></td>';
                 break;
@@ -98,10 +99,10 @@ function listenRow( event, rowId){
         clickedElement.innerHTML = html;
         let children = clickedElement.children[0];
         children.onblur = function () {
-            if(clickedElement.innerText != children.value){
+            if (clickedElement.innerText != children.value) {
                 clickedElement.innerHTML = '<td>' + children.value + '</td>';
                 let dataRow = {
-                    id : rowId,
+                    id: rowId,
                     date: parent.children[1].innerText,
                     name: parent.children[2].innerText,
                     value: parent.children[3].innerText,
@@ -114,7 +115,8 @@ function listenRow( event, rowId){
         children.focus();
     }
 }
-function submit(){
+
+function submit() {
     let row = {
         date: document.getElementById('date').valueAsDate,
         name: document.getElementById('name').value,
@@ -122,6 +124,7 @@ function submit(){
     };
     inputRow(row)
 }
+
 async function inputRow(dataRow) {
     const requestURL = 'http://localhost:8080/table/insert';
     let response = await fetch(requestURL, {
@@ -140,6 +143,7 @@ async function inputRow(dataRow) {
     loadTable();
     document.getElementById('dwindow').close();
 }
+
 async function deleteRow(idRow) {
     const requestURL = 'http://localhost:8080/table/delete/' + idRow;
     let response = await fetch(requestURL, {
@@ -148,6 +152,7 @@ async function deleteRow(idRow) {
     console.log(response);
     loadTable();
 }
+
 async function deleteAllRow() {
     const requestURL = 'http://localhost:8080/table/deleteAll';
     let response = await fetch(requestURL, {
@@ -156,7 +161,8 @@ async function deleteAllRow() {
     console.log(response);
     loadTable();
 }
-async function init(){
+
+async function init() {
     const requestURL = 'http://localhost:8080/table/init';
     let response = await fetch(requestURL, {
         method: 'GET'
@@ -164,7 +170,8 @@ async function init(){
     console.log(response);
     loadTable();
 }
-async function putRow(row){
+
+async function putRow(row) {
     const requestURL = 'http://localhost:8080/table/update/' + row.id;
     let response = await fetch(requestURL, {
         method: 'PUT',
